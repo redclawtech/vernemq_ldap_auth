@@ -1,0 +1,20 @@
+{application, vernemq_ldap_auth,
+ [
+  {description, "LDAP Authentication Plugin for VerneMQ"},
+  {vsn, git},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib,
+                  crypto,
+                  clique
+                 ]},
+  {mod, { vernemq_ldap_auth_app, []}},
+  {env, [
+      {vmq_config_enabled, true},
+      {vmq_plugin_hooks, [
+          {vernemq_ldap_auth, auth_on_register, 5, []},
+          {vernemq_ldap_auth, auth_on_register_m5, 6, []}
+        ]}
+    ]}
+ ]}.
