@@ -1,5 +1,5 @@
 %% ----------------------------------------------------------------------------
-%% VerneMQMQ LDAP Auth Plugin
+%% VerneMQ LDAP Auth Plugin
 %% ----------------------------------------------------------------------------
 
 %% Specify the LDAP port to connect to. Default to 389.
@@ -10,7 +10,17 @@
  ]
 }.
 
-%% Connect to the LDAP server using TLS
+{mapping, "ldap_auth.pool_size", "vernemq_ldap_auth.pool_size",
+ [
+  {default, 5},
+  {datatype, integer}
+ ]
+}.
+
+
+%% TLS options
+
+%% Connect to the LDAP server using SSl
 {mapping, "ldap_auth.use_ssl", "vernemq_ldap_auth.use_ssl",
  [
   {datatype, {enum, [true, false]}}
@@ -24,6 +34,13 @@
  ]
 }.
 
+%% TLS options
+
+{mapping, "ldap_auth.ssl_options.verify", "vernemq_ldap_auth.ssl_options.verify",
+  [
+   {datatype, {enum, [verify_peer, verify_none]}}
+  ]
+}.
 
 
 
