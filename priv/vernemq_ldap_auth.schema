@@ -41,6 +41,3 @@
    {datatype, {enum, [verify_peer, verify_none]}}
   ]
 }.
-
-
-
