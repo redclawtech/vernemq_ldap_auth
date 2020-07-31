@@ -6,8 +6,9 @@
 %% LDAP server(s) Connection
 %% =========================
 
-%% Specify the LDAP servers to bind to.
-{mapping, "ldap_auth.$server.address", "vernemq_ldap_auth.servers",
+%% List of IP addresses or DNS names of the LDAP servers. 
+%% They are tried sequentially, ordered by name, until a connection is established.
+{mapping, "ldap_auth.servers.$server", "vernemq_ldap_auth.servers",
  [
   {datatype, string},
   {include_default, "ldap1"},
@@ -22,9 +23,9 @@
          ServerNames =
              proplists:get_all_values(
                "$server",
-               cuttlefish_variable:fuzzy_matches(["ldap_auth", "$server", "address"], Conf)),
+               cuttlefish_variable:fuzzy_matches(["ldap_auth", "servers", "$server"], Conf)),
          Servers =
-             [ {Name, cuttlefish:conf_get("ldap_auth." ++ Name ++ ".address", Conf, undefined)}
+             [ {Name, cuttlefish:conf_get("ldap_auth.servers" ++ Name, Conf, undefined)}
                || Name <- ServerNames ],
          lists:keysort(1, Servers)
  end}.
