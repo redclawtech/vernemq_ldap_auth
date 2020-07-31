@@ -17,18 +17,15 @@ start() ->
 stop() ->
     application:stop(vernemq_ldap_auth).
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% VerneMQ Hooks
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 auth_on_register(_Peer, _SubscriberId, User, Password, _CleanSession) ->
     authenticate(User, Password).
 
 auth_on_register_m5(_Peer, _SubscriberId, User, Password, _CleanStart, _Properties) ->
     authenticate(User, Password).
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Internal
@@ -41,8 +38,6 @@ authenticate(_, undefined) ->
 authenticate(User, Password) ->
     ok.
 
-
-
 eldap_error({ldap_search_failed, Reason}) ->
     io_lib:format("LDAP search returned error: ~s", [eldap_error(Reason)]);
 eldap_error({connect_failed, _}) ->
@@ -52,8 +47,8 @@ eldap_error({start_tls_failed, _}) ->
 eldap_error({ldap_url_parse_error, URL, Error}) ->
     io_lib:format("Failed to parse LDAP url ~p (~s)", [URL, eldap_error(Error)]);
 eldap_error({dn_search_failed, Reason}) ->
-    io_lib:format("LDAP search for user distinguished name failed with reason:"
-                  " ~s", [eldap_error(Reason)]);
+    io_lib:format("LDAP search for user distinguished name failed with reason: ~s",
+                  [eldap_error(Reason)]);
 eldap_error(dn_not_found) ->
     "LDAP distinguished name not found";
 eldap_error(not_unique_username) ->
@@ -69,8 +64,7 @@ eldap_error(malformed_url) ->
 eldap_error({invalid_dn, DN}) ->
     io_lib:format("Invalid LDAP distinguished name \"~s\"", [DN]);
 eldap_error({invalid_scope, Scope}) ->
-    io_lib:format("Invalid LDAP scope: ~p, possible values are one, "
-                  "base or sub", [Scope]);
+    io_lib:format("Invalid LDAP scope: ~p, possible values are one, base or sub", [Scope]);
 eldap_error(user_placeholder) ->
     "%u placeholder is not allowed in nested groups search";
 eldap_error(max_depth) ->
@@ -84,12 +78,9 @@ eldap_error(invalidCredentials) ->
 eldap_error(anonymous_auth) ->
     "Anonymous bind is not supported by LDAP server";
 eldap_error(unwillingToPerform) ->
-    "LDAP server cannot process the request because of server-defined restrictions";
+    "LDAP server cannot process the request because of server-defined "
+    "restrictions";
 eldap_error(invalidDNSyntax) ->
     "Invalid LDAP distinguished name syntax";
 eldap_error(Error) ->
     io_lib:format("~p", [Error]).
-
-
-
-
