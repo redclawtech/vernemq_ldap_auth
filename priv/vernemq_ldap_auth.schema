@@ -2,6 +2,33 @@
 %% VerneMQ LDAP Auth Plugin
 %% ----------------------------------------------------------------------------
 
+%% =========================
+%% LDAP server(s) Connection
+%% =========================
+
+%% Specify the LDAP servers to bind to.
+{mapping, "ldap_auth.$server.address", "vernemq_ldap_auth.servers",
+ [
+  {datatype, string},
+  {include_default, "ldap1"},
+  {commented, "127.0.0.1"},
+ ]
+}.
+
+
+{translation,
+ "vernemq_ldap_auth.servers",
+ fun(Conf) ->
+         ServerNames =
+             proplists:get_all_values(
+               "$server",
+               cuttlefish_variable:fuzzy_matches(["ldap_auth", "$server", "address"], Conf)),
+         Servers =
+             [ {Name, cuttlefish:conf_get("ldap_auth." ++ Name ++ ".address", Conf, undefined)}
+               || Name <- ServerNames ],
+         lists:keysort(1, Servers)
+ end}.
+
 %% Specify the LDAP port to connect to. Default to 389.
 {mapping, "ldap_auth.port", "vernemq_ldap_auth.port",
  [
